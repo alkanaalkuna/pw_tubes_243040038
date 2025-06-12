@@ -28,17 +28,13 @@ function registrasi($data)
     // cek username sudah ada atau belum
     $result = mysqli_query($conn, "SELECT username FROM users WHERE username = '$username'");
     if (mysqli_fetch_assoc($result)) {
-        echo "<script>
-        alert('Username sudah terdaftar!');
-        </script>";
+        echo "<script>alert('Username sudah terdaftar!');</script>";
         return false;
     }
 
     // cek konfirmasi password
     if ($password !== $password2) {
-        echo "<script>
-        alert('Konfirmasi password tidak sesuai');
-        </script>";
+        echo "<script>alert('Konfirmasi password tidak sesuai');</script>";
         return false;
     }
 

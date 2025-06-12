@@ -1,3 +1,16 @@
+<?php
+session_start();
+require_once 'functions.php';
+
+if (!isset($_SESSION['login'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$id = $_SESSION['user_id'];
+$user = query("SELECT * FROM users WHERE id = $id")[0];
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -56,6 +69,15 @@
 <body>
     <div class="container">
         <div class="kontainer-profil">
+            <div class="text-center mb-3">
+                <?php if (!empty($user['foto'])): ?>
+                    <img src="img/profile/<?= $user['foto']; ?>" width="80" height="80" class="rounded-circle mb-2">
+                <?php else: ?>
+                    <i class="fas fa-user-circle fa-3x text-secondary mb-2"></i>
+                <?php endif; ?>
+                <h5><?= htmlspecialchars($user['username']); ?></h5>
+            </div>
+
             <div class="header-profil">
                 <div class="judul-profil">PROFIL</div>
             </div>

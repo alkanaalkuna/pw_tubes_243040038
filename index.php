@@ -1,10 +1,17 @@
 <?php
 require "functions.php";
 session_start();
+
 if (!isset($_SESSION["login"])) {
     header("Location: login.php");
     exit;
 }
+
+if (isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id'];
+    $userNav = query("SELECT username, foto FROM users WHERE id = $userId")[0];
+}
+
 $users = query("SELECT * FROM users ORDER BY username ASC");
 ?>
 
@@ -17,6 +24,12 @@ $users = query("SELECT * FROM users ORDER BY username ASC");
     <title>TiketinAja</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image" href="img/logo.jpg">
+    <style>
+        img.rounded-circle {
+            object-fit: cover;
+        }
+    </style>
 </head>
 
 <body class="bg-light">
@@ -32,10 +45,16 @@ $users = query("SELECT * FROM users ORDER BY username ASC");
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="harga/pemesanan.php">Harga</a></li>
-                    <li class="nav-item"><a class="nav-link" href="orders/orders.php">Your Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="harga/orders.php">Your Orders</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="akunDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fa-solid fa-user"></i> <?= htmlspecialchars($_SESSION["username"]); ?>
+                            <?php if (!empty($userNav['foto'])): ?>
+                                <img src="img/profile/<?= $userNav['foto']; ?>" class="rounded-circle me-2" width="28" height="28">
+                            <?php else: ?>
+                                <i class="fa-solid fa-user me-2"></i>
+                            <?php endif; ?>
+                            <?= htmlspecialchars($userNav['username']); ?>
+
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.php">Profil</a></li>

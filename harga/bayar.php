@@ -38,7 +38,7 @@ VALUES ('$user_id', '$tipe', '$kuantitas', '$tanggal', '$total')");
             <p><strong>Status:</strong> <span class="badge bg-success">Pembayaran Berhasil</span></p>
         </div>
     </div>
-    <a href="../orders.php" class="btn btn-primary mt-3">📋 Lihat Riwayat Pemesanan</a>
+    <a href="orders.php" class="btn btn-primary mt-3">📋 Lihat Riwayat Pemesanan</a>
     <a href="pemesanan.php" class="btn btn-secondary mt-3">← Kembali ke Harga Tiket</a>
 </body>
 

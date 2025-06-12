@@ -52,7 +52,7 @@ if (isset($_POST["cari"])) {
                                 <tr>
                                     <td><?= $i++; ?></td>
                                     <td><?= $ktg['nama'] ?></td>
-                                    <td>Rp<?= number_format($ktg['harga'], 0, ',', '.') ?></td>
+                                    <td><?= number_format($ktg['harga'], 0, ',', '.') ?>K</td>
                                     <td><?= $ktg['deskripsi'] ?></td>
                                     <td>
                                         <a href="bayar.php?tipe=<?= $ktg['nama']; ?>&harga=<?= $ktg['harga']; ?>" class="btn btn-success btn-sm">Pesan</a>
@@ -62,6 +62,8 @@ if (isset($_POST["cari"])) {
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <a href="/pw_tubes_243040038/index.php" class="btn btn-secondary mt-3">← Kembali ke Beranda</a>
+
                 </div>
                 <script src="script.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>

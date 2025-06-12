@@ -14,14 +14,11 @@ $user = query("SELECT * FROM users WHERE id = $id")[0];
 $success = '';
 $error = '';
 
-
 // Proses update profil
 if (isset($_POST['simpan'])) {
     $username = htmlspecialchars($_POST['username']);
     $password = $_POST['password'];
     $fotoBaru = $user['foto'];
-
-
 
     // Upload foto jika ada
     if ($_FILES['foto']['name']) {
@@ -35,11 +32,11 @@ if (isset($_POST['simpan'])) {
             if (!is_dir('img/profile')) {
                 mkdir('img/profile', 0755, true);
             }
-            if ($_FILES['foto']['size'] > 1048576) { // 1 MB
-                $error = "Ukuran foto maksimal 1MB.";
-            }
-
             move_uploaded_file($tmp, 'img/profile/' . $namaBaru);
+            // Hapus foto lama jika ada
+            if (!empty($user['foto']) && file_exists('img/profile/' . $user['foto'])) {
+                unlink('img/profile/' . $user['foto']);
+            }
             $fotoBaru = $namaBaru;
         } else {
             $error = "Format foto tidak valid (hanya jpg/jpeg/png).";
@@ -47,7 +44,7 @@ if (isset($_POST['simpan'])) {
     }
 
     // Update password jika diisi
-    if (!empty($error)) {
+    if (!$error) {
         if ($password) {
             $password = password_hash($password, PASSWORD_DEFAULT);
             mysqli_query($conn, "UPDATE users SET username = '$username', password = '$password', foto = '$fotoBaru' WHERE id = $id");
@@ -55,19 +52,21 @@ if (isset($_POST['simpan'])) {
             mysqli_query($conn, "UPDATE users SET username = '$username', foto = '$fotoBaru' WHERE id = $id");
         }
 
-        $result = true;
-
-        if ($result) {
-            $_SESSION['username'] = $username;
-            $success = "Data berhasil diperbarui.";
-        } else {
-            $error = "Gagal memperbarui data.";
-        }
-
-        // $_SESSION['username'] = $username;
-        // header("Location: profile.php");
-        // exit;
+        $_SESSION['username'] = $username;
+        $success = "Data berhasil diperbarui.";
+        $user['foto'] = $fotoBaru;
+        $user['username'] = $username;
     }
+}
+
+// Hapus foto
+if (isset($_POST['hapus_foto'])) {
+    if (!empty($user['foto']) && file_exists('img/profile/' . $user['foto'])) {
+        unlink('img/profile/' . $user['foto']);
+    }
+    mysqli_query($conn, "UPDATE users SET foto = '' WHERE id = $id");
+    $user['foto'] = '';
+    $success = "Foto profil berhasil dihapus.";
 }
 ?>
 
@@ -80,13 +79,27 @@ if (isset($_POST['simpan'])) {
 </head>
 
 <body class="container py-4">
-    <h2>Profil Saya</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Profil Saya</h2>
+        <div class="d-flex align-items-center gap-2">
+            <?php if (!empty($user['foto'])) : ?>
+                <img src="img/profile/<?= $user['foto']; ?>" width="40" height="40" class="rounded-circle">
+            <?php endif; ?>
+            <strong><?= htmlspecialchars($user['username']); ?></strong>
+        </div>
+    </div>
 
     <?php if ($success): ?>
-        <div class="alert alert-success"><?= $success; ?></div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= $success; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     <?php endif; ?>
     <?php if ($error): ?>
-        <div class="alert alert-danger"><?= $error; ?></div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= $error; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     <?php endif; ?>
 
     <form action="" method="post" enctype="multipart/form-data" style="max-width: 400px;">
@@ -102,6 +115,7 @@ if (isset($_POST['simpan'])) {
             <label>Foto Profil <small>(opsional)</small></label><br>
             <?php if ($user['foto']) : ?>
                 <img src="img/profile/<?= $user['foto']; ?>" width="80" class="mb-2 rounded"><br>
+                <button type="submit" name="hapus_foto" class="btn btn-outline-danger btn-sm mb-2">Hapus Foto</button>
             <?php endif; ?>
             <input type="file" name="foto" class="form-control">
         </div>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'functions.php';
+require_once 'functions.php';
 
 if (isset($_SESSION["login"])) {
     header("Location: /pw_tubes_243040038/admin/admin.php");
@@ -41,6 +41,7 @@ if (isset($_POST["login"])) { // ganti dari "Login" ke "login" (huruf kecil)
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 
 <body class="bg-light">
