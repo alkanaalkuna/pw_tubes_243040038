@@ -51,7 +51,7 @@ if (isset($_POST["login"])) { // ganti dari "Login" ke "login" (huruf kecil)
             <div class="col-md-4">
                 <div class="card shadow">
                     <div class="card-body">
-                        <h1 class="card-title text-center mb-4">Halaman Login</h1>
+                        <h1 class="card-title text-center mb-4">Login</h1>
 
                         <?php if ($error) : ?>
                             <div class="alert alert-danger" role="alert">
@@ -72,6 +72,9 @@ if (isset($_POST["login"])) { // ganti dari "Login" ke "login" (huruf kecil)
                                 <button type="submit" name="login" class="btn btn-primary">Login</button>
                             </div>
                         </form>
+                        <p class="mt-3 text-center">
+                            Belum punya akun? <a href="signin.php">Daftar di sini</a>
+                        </p>
                     </div>
                 </div>
             </div>

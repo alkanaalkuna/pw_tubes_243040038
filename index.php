@@ -44,7 +44,7 @@ $users = query("SELECT * FROM users ORDER BY username ASC");
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="harga/pemesanan.php">Harga</a></li>
+                    <li class="nav-item"><a class="nav-link" href="harga/pemesanan.php">Price</a></li>
                     <li class="nav-item"><a class="nav-link" href="harga/orders.php">Your Orders</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="akunDropdown" role="button" data-bs-toggle="dropdown">
